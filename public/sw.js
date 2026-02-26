@@ -1,8 +1,9 @@
 
-const CACHE_NAME = 'health-tracker-v3-v1';
+const CACHE_NAME = 'health-tracker-v4';
 const ASSETS = [
   './',
   './index.html',
+  './manifest.json',
   'https://cdn.tailwindcss.com',
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css'
 ];
@@ -10,7 +11,8 @@ const ASSETS = [
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(ASSETS);
+      // Use allSettled to prevent failure if one asset is missing
+      return Promise.allSettled(ASSETS.map(url => cache.add(url)));
     })
   );
   self.skipWaiting();
