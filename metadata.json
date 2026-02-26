@@ -1,0 +1,5 @@
+{
+  "name": "Gesundheits-Tracker Web",
+  "description": "Eine moderne Web-Anwendung zur Erfassung von Gesundheitswerten wie Blutzucker, Blutdruck und Puls mit Exportfunktion und lokaler Speicherung.",
+  "requestFramePermissions": []
+}
