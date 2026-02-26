@@ -1,8 +1,9 @@
 
-const CACHE_NAME = 'health-tracker-v5';
+const CACHE_NAME = 'health-tracker-v7';
 const ASSETS = [
-  'index.html',
-  'manifest.json',
+  './',
+  './index.html',
+  './manifest.json',
   'https://cdn.tailwindcss.com',
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css'
 ];
