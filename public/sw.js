@@ -1,5 +1,5 @@
 
-const CACHE_NAME = 'health-tracker-v8';
+const CACHE_NAME = 'health-tracker-v9';
 const ASSETS = [
   '/gesundheits-tracker-web-1/',
   '/gesundheits-tracker-web-1/index.html',

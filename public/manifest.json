@@ -10,7 +10,7 @@
       "purpose": "any maskable"
     }
   ],
-  "start_url": "/gesundheits-tracker-web-1/index.html",
+  "start_url": "/gesundheits-tracker-web-1/",
   "scope": "/gesundheits-tracker-web-1/",
   "display": "standalone",
   "theme_color": "#2563eb",
