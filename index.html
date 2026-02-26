@@ -30,13 +30,13 @@
 <script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-      navigator.serviceWorker.register('sw.js').catch(err => console.log('SW registration failed:', err));
+      navigator.serviceWorker.register('/gesundheits-tracker-web-1/sw.js').catch(err => console.log('SW registration failed:', err));
     });
   }
 </script>
 </head>
 <body class="bg-gray-100 text-gray-900 overflow-x-hidden">
     <div id="root"></div>
-    <script type="module" src="index.tsx"></script>
+    <script type="module" src="/index.tsx"></script>
 </body>
 </html>
