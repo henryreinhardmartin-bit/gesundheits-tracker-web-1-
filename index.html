@@ -9,13 +9,13 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Gesundheits-Tracker V3.0</title>
     <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/2966/2966327.png">
-    <link rel="manifest" href="manifest.json?v=5">
+    <link rel="manifest" href="./manifest.json">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous">
 <script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/gesundheits-tracker-web-1/sw.js').catch(err => console.log('SW registration failed:', err));
+      navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW registration failed:', err));
     });
   }
 </script>
