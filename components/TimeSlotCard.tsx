@@ -18,7 +18,7 @@ const InputGroup: React.FC<InputGroupProps> = ({ children, unit, isAlert, bgColo
     <div className={`px-1 flex items-center justify-center border-l transition-colors min-w-[24px] shrink-0 ${
       isAlert ? 'bg-red-200 border-red-600' : 'bg-black/5 border-black'
     }`}>
-      <span className={`text-[7px] font-black uppercase tracking-tighter leading-none ${
+      <span className={`text-[8px] font-black uppercase tracking-tighter leading-none ${
         isAlert ? 'text-red-900' : 'text-black'
       }`}>{unit}</span>
     </div>
@@ -68,7 +68,7 @@ const TimeSlotCard: React.FC<TimeSlotCardProps> = ({ label, translatedLabel, val
             <input
               id={`input-${label}-rrSys`}
               type="text" inputMode="numeric" placeholder="Sys"
-              className="w-full px-1 py-0 outline-none text-[11px] font-black font-mono bg-transparent text-black placeholder-black/20 text-center"
+              className="w-full px-1 py-0 outline-none text-[11px] font-black font-mono bg-transparent text-black placeholder-black/50 placeholder:font-bold text-center"
               value={values.rrSys} onChange={(e) => onChange('rrSys', e.target.value)}
             />
           </InputGroup>
@@ -76,7 +76,7 @@ const TimeSlotCard: React.FC<TimeSlotCardProps> = ({ label, translatedLabel, val
             <input
               id={`input-${label}-rrDia`}
               type="text" inputMode="numeric" placeholder="Dia"
-              className="w-full px-1 py-0 outline-none text-[11px] font-black font-mono bg-transparent text-black placeholder-black/20 text-center"
+              className="w-full px-1 py-0 outline-none text-[11px] font-black font-mono bg-transparent text-black placeholder-black/50 placeholder:font-bold text-center"
               value={values.rrDia} onChange={(e) => onChange('rrDia', e.target.value)}
             />
           </InputGroup>
@@ -86,7 +86,7 @@ const TimeSlotCard: React.FC<TimeSlotCardProps> = ({ label, translatedLabel, val
             <input
               id={`input-${label}-puls`}
               type="text" inputMode="numeric" placeholder="Puls"
-              className="w-full px-1 py-0 outline-none text-[11px] font-black font-mono bg-transparent text-black placeholder-black/20 text-center"
+              className="w-full px-1 py-0 outline-none text-[11px] font-black font-mono bg-transparent text-black placeholder-black/50 placeholder:font-bold text-center"
               value={values.puls} onChange={(e) => onChange('puls', e.target.value)}
             />
           </InputGroup>
@@ -96,7 +96,7 @@ const TimeSlotCard: React.FC<TimeSlotCardProps> = ({ label, translatedLabel, val
               type="text" 
               inputMode={bzUnit === 'mg/dl' ? 'numeric' : 'decimal'} 
               placeholder={bzUnit === 'mg/dl' ? 'BZ' : '0.0'}
-              className="w-full px-1 py-0 outline-none text-[11px] font-black font-mono bg-transparent text-black placeholder-black/20 text-center"
+              className="w-full px-1 py-0 outline-none text-[11px] font-black font-mono bg-transparent text-black placeholder-black/50 placeholder:font-bold text-center"
               value={values.bz} onChange={(e) => onChange('bz', e.target.value)}
             />
           </InputGroup>

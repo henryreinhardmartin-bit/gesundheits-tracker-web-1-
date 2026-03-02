@@ -31,7 +31,7 @@ const HeaderInput: React.FC<{
       placeholder={placeholder}
       value={value}
       onChange={(e) => onChange(e.target.value)}
-      className={`w-full px-2 py-0 outline-none text-black text-[11px] sm:text-xs font-black bg-transparent placeholder:font-normal placeholder:opacity-30 ${isMono ? 'font-mono' : ''}`}
+      className={`w-full px-2 py-0 outline-none text-black text-[11px] sm:text-xs font-black bg-transparent placeholder:font-bold placeholder:text-black/50 ${isMono ? 'font-mono' : ''}`}
     />
     <div className="bg-gray-200 border-l border-black px-1 flex items-center justify-center min-w-[24px] shrink-0">
       <span className="text-[7px] sm:text-[9px] font-black text-black uppercase leading-none tracking-tighter">{label}</span>
@@ -355,6 +355,53 @@ const App: React.FC = () => {
       showNotification('error', t.notifications.errorDate);
       return;
     }
+
+    // Validierung der Eingabeformate
+    for (const time of TIMES) {
+      const data = inputs[time];
+      const timeLabel = t.times[time];
+
+      if (data.bz.trim()) {
+        const bzVal = parseFloat(data.bz.replace(',', '.'));
+        if (isNaN(bzVal) || bzVal <= 0 || bzVal > 1000) {
+          showNotification('error', `${timeLabel}: ${t.notifications.invalidBz || 'Ungültiger Blutzuckerwert'}`);
+          return;
+        }
+      }
+
+      if (data.rrSys.trim()) {
+        const sysVal = parseInt(data.rrSys);
+        if (isNaN(sysVal) || sysVal < 40 || sysVal > 300) {
+          showNotification('error', `${timeLabel}: ${t.notifications.invalidSys || 'Ungültiger Blutdruck (Sys)'}`);
+          return;
+        }
+      }
+
+      if (data.rrDia.trim()) {
+        const diaVal = parseInt(data.rrDia);
+        if (isNaN(diaVal) || diaVal < 30 || diaVal > 200) {
+          showNotification('error', `${timeLabel}: ${t.notifications.invalidDia || 'Ungültiger Blutdruck (Dia)'}`);
+          return;
+        }
+      }
+
+      if (data.puls.trim()) {
+        const pulsVal = parseInt(data.puls);
+        if (isNaN(pulsVal) || pulsVal < 20 || pulsVal > 300) {
+          showNotification('error', `${timeLabel}: ${t.notifications.invalidPuls || 'Ungültiger Pulswert'}`);
+          return;
+        }
+      }
+
+      // Logik-Check: Sys muss höher als Dia sein
+      if (data.rrSys.trim() && data.rrDia.trim()) {
+        if (parseInt(data.rrSys) <= parseInt(data.rrDia)) {
+          showNotification('error', `${timeLabel}: Sys muss höher als Dia sein.`);
+          return;
+        }
+      }
+    }
+
     const hasAnyInput = TIMES.some(t => 
       inputs[t].bz.trim() || inputs[t].rrSys.trim() || inputs[t].rrDia.trim() || inputs[t].puls.trim()
     );
@@ -482,18 +529,18 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen pb-4 bg-gray-50 text-black font-sans selection:bg-blue-200">
-      <header className="bg-blue-900 text-white pt-2 pb-10 px-2 shadow-xl border-b-2 border-black print:hidden">
-        <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3">
-          <h1 className="text-lg sm:text-2xl font-black italic shrink-0"><i className="fa-solid fa-heart-pulse text-red-500"></i> MED-LOG</h1>
-          <div className="flex items-center gap-2 flex-grow justify-end w-full max-w-2xl">
-            <HeaderInput label={t.header.pat} placeholder={t.header.namePlaceholder} value={userProfile.name} onChange={(v) => setUserProfile(p => ({ ...p, name: v }))} className="flex-[2]" />
-            <HeaderInput label={t.header.geb} placeholder="TT.MM.JJJJ" value={userProfile.birthday} onChange={(v) => setUserProfile(p => ({ ...p, birthday: v }))} className="flex-[2]" isMono />
-            <HeaderInput label={t.header.akt} value={datum} onChange={setDatum} className="flex-[2]" isMono />
+      <header className="bg-blue-900 text-white pt-1.5 pb-6 px-2 shadow-xl border-b-2 border-black print:hidden">
+        <div className="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-2">
+          <h1 className="text-base sm:text-2xl font-black italic shrink-0"><i className="fa-solid fa-heart-pulse text-red-500"></i> MED-LOG</h1>
+          <div className="grid grid-cols-3 md:flex items-center gap-1.5 flex-grow justify-end w-full max-w-2xl">
+            <HeaderInput label={t.header.pat} placeholder={t.header.namePlaceholder} value={userProfile.name} onChange={(v) => setUserProfile(p => ({ ...p, name: v }))} className="col-span-2 md:flex-[2]" />
+            <HeaderInput label={t.header.geb} placeholder="TT.MM.JJJJ" value={userProfile.birthday} onChange={(v) => setUserProfile(p => ({ ...p, birthday: v }))} className="col-span-1 md:flex-[2]" isMono />
+            <HeaderInput label={t.header.akt} value={datum} onChange={setDatum} className="col-span-3 md:flex-[2]" isMono />
           </div>
         </div>
       </header>
 
-      <main className="max-w-5xl mx-auto px-2 space-y-4 -mt-8 relative print:mt-0">
+      <main className="max-w-5xl mx-auto px-2 space-y-4 -mt-4 relative print:mt-0">
         <style>{`
           @media print {
             body { background: white !important; padding: 0 !important; margin: 0 !important; }
