@@ -1,6 +1,6 @@
 {
   "name": "health-tracker-v3",
-  "version": "3.3.5",
+  "version": "3.3.6",
   "description": "Moderner Gesundheits-Tracker für Linux",
   "main": "main.js",
   "scripts": {

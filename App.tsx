@@ -12,6 +12,7 @@ import { uiTranslations } from './translations';
 import * as htmlToImage from 'html-to-image';
 import * as XLSX from 'xlsx';
 import { jsPDF } from 'jspdf';
+import { Share2, Mail, Download, ExternalLink, X } from 'lucide-react';
 
 const TIMES: TimeOfDay[] = ['Morgens', 'Mittags', 'Abends', 'Nacht'];
 const FIELDS = ['rrSys', 'rrDia', 'puls', 'bz'] as const;
@@ -65,6 +66,86 @@ const ConfirmModal: React.FC<{
   );
 };
 
+const ShareModal: React.FC<{
+  isOpen: boolean;
+  onClose: () => void;
+  onSelect: (option: 'email' | 'gmail' | 'outlook' | 'whatsapp' | 'copy' | 'download') => void;
+  t: any;
+}> = ({ isOpen, onClose, onSelect, t }) => {
+  if (!isOpen) return null;
+  return (
+    <div className="fixed inset-0 z-[600] flex items-center justify-center p-4 bg-black/70 backdrop-blur-md animate-in fade-in duration-200">
+      <div className="bg-white border-4 border-black rounded-2xl shadow-[12px_12px_0px_0px_rgba(0,0,0,1)] max-w-md w-full overflow-hidden text-black">
+        <div className="bg-black text-white p-4 flex justify-between items-center border-b-4 border-black">
+          <h3 className="font-black uppercase italic tracking-tighter flex items-center gap-2">
+            <Share2 size={20} /> {t.share.title}
+          </h3>
+          <button onClick={onClose} className="hover:rotate-90 transition-transform">
+            <X size={24} />
+          </button>
+        </div>
+        
+        <div className="p-6 space-y-3 max-h-[70vh] overflow-y-auto">
+          <div className="grid grid-cols-2 gap-3">
+            <button 
+              onClick={() => onSelect('email')}
+              className="flex flex-col items-center gap-2 p-4 border-2 border-black rounded-xl hover:bg-blue-50 transition-colors group active:translate-y-1"
+            >
+              <Mail size={24} className="text-blue-700" />
+              <div className="font-black uppercase text-[10px] tracking-tight">{t.share.email}</div>
+            </button>
+            <button 
+              onClick={() => onSelect('whatsapp')}
+              className="flex flex-col items-center gap-2 p-4 border-2 border-black rounded-xl hover:bg-green-50 transition-colors group active:translate-y-1"
+            >
+              <i className="fa-brands fa-whatsapp text-2xl text-green-600"></i>
+              <div className="font-black uppercase text-[10px] tracking-tight">WhatsApp</div>
+            </button>
+          </div>
+
+          <div className="grid grid-cols-2 gap-3">
+            <button 
+              onClick={() => onSelect('gmail')}
+              className="flex flex-col items-center gap-2 p-4 border-2 border-black rounded-xl hover:bg-red-50 transition-colors group active:translate-y-1"
+            >
+              <ExternalLink size={20} className="text-red-600" />
+              <div className="font-black uppercase text-[10px] tracking-tight">{t.share.gmail}</div>
+            </button>
+            <button 
+              onClick={() => onSelect('outlook')}
+              className="flex flex-col items-center gap-2 p-4 border-2 border-black rounded-xl hover:bg-blue-50 transition-colors group active:translate-y-1"
+            >
+              <ExternalLink size={20} className="text-blue-600" />
+              <div className="font-black uppercase text-[10px] tracking-tight">{t.share.outlook}</div>
+            </button>
+          </div>
+
+          <div className="grid grid-cols-2 gap-3">
+            <button 
+              onClick={() => onSelect('copy')}
+              className="flex flex-col items-center gap-2 p-4 border-2 border-black rounded-xl hover:bg-purple-50 transition-colors group active:translate-y-1"
+            >
+              <i className="fa-solid fa-copy text-xl text-purple-600"></i>
+              <div className="font-black uppercase text-[10px] tracking-tight">{t.share.copy}</div>
+            </button>
+            <button 
+              onClick={() => onSelect('download')}
+              className="flex flex-col items-center gap-2 p-4 border-2 border-black rounded-xl hover:bg-gray-50 transition-colors group active:translate-y-1"
+            >
+              <Download size={20} className="text-gray-700" />
+              <div className="font-black uppercase text-[10px] tracking-tight">{t.share.download}</div>
+            </button>
+          </div>
+
+          <div className="mt-4 p-3 bg-amber-50 border-2 border-amber-200 rounded-lg text-[9px] font-bold text-amber-900 leading-tight">
+            <i className="fa-solid fa-circle-info mr-1"></i> {t.share.info}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const App: React.FC = () => {
   const [datum, setDatum] = useState<string>(formatDateToGerman(new Date()));
   const [entries, setEntries] = useState<HealthEntry[]>([]);
@@ -82,6 +163,8 @@ const App: React.FC = () => {
   const [showExportMenu, setShowExportMenu] = useState(false);
   const [exportType, setExportType] = useState<'png' | 'pdf'>('png');
   const [isSharing, setIsSharing] = useState(false);
+  const [showShareModal, setShowShareModal] = useState(false);
+  const [shareFileData, setShareFileData] = useState<{ file: File; data: string } | null>(null);
   
   const [confirmData, setConfirmData] = useState<{ isOpen: boolean; title: string; message: string; action: () => void } | null>(null);
 
@@ -484,25 +567,57 @@ const App: React.FC = () => {
     if (entries.length === 0) { showNotification('error', t.notifications.errorEmpty); return; }
     const data = JSON.stringify({ entries, userProfile, bzUnit, date: new Date().toISOString() }, null, 2);
     const filename = `VitalLog_Backup_${formatDateToGerman(new Date())}.json`;
-    const blob = new Blob([data], { type: 'application/json' });
-    const file = new File([blob], filename, { type: 'application/json' });
+    const blob = new Blob([data], { type: 'text/plain' });
+    const file = new File([blob], filename, { type: 'text/plain' });
 
-    if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+    setShareFileData({ file, data });
+    setShowShareModal(true);
+  };
+
+  const executeShare = async (option: 'email' | 'gmail' | 'outlook' | 'whatsapp' | 'copy' | 'download') => {
+    if (!shareFileData) return;
+    const { data } = shareFileData;
+    const mailtoUrl = `mailto:?subject=VitalLog Backup&body=Anbei mein Backup. (Bitte Datei manuell anhängen)`;
+    
+    setShowShareModal(false);
+
+    if (option === 'email') {
+      showNotification('success', t.share.preparing);
+      const mailLink = document.createElement('a');
+      mailLink.href = mailtoUrl;
+      mailLink.target = '_blank';
+      document.body.appendChild(mailLink);
+      mailLink.click();
+      document.body.removeChild(mailLink);
+      setTimeout(() => handleExportJSON(), 1500);
+    }
+    else if (option === 'gmail') {
+      showNotification('success', t.share.preparing);
+      const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&tf=1&to=&su=VitalLog+Backup&body=Anbei+mein+Backup.+Bitte+Datei+manuell+anhängen.`;
+      window.open(gmailUrl, '_blank');
+      setTimeout(() => handleExportJSON(), 1500);
+    }
+    else if (option === 'outlook') {
+      showNotification('success', t.share.preparing);
+      const outlookUrl = `https://outlook.live.com/default.aspx?rru=compose&subject=VitalLog+Backup&body=Anbei+mein+Backup.+Bitte+Datei+manuell+anhängen.`;
+      window.open(outlookUrl, '_blank');
+      setTimeout(() => handleExportJSON(), 1500);
+    }
+    else if (option === 'whatsapp') {
+      showNotification('success', t.share.preparing);
+      const waUrl = `https://wa.me/?text=Hier+ist+mein+VitalLog+Backup.+Bitte+Datei+manuell+anhängen.`;
+      window.open(waUrl, '_blank');
+      setTimeout(() => handleExportJSON(), 1500);
+    }
+    else if (option === 'copy') {
       try {
-        await navigator.share({
-          files: [file],
-          title: 'VitalLog Backup',
-          text: 'Hier ist mein VitalLog Backup.'
-        });
-        showNotification('success', 'Backup erfolgreich geteilt.');
+        await navigator.clipboard.writeText(data);
+        showNotification('success', t.share.copySuccess);
       } catch (err) {
-        if ((err as Error).name !== 'AbortError') {
-          window.location.href = `mailto:?subject=VitalLog Backup&body=Anbei mein Backup. (Bitte Datei manuell anhängen)`;
-          handleExportJSON();
-        }
+        showNotification('error', 'Kopieren fehlgeschlagen.');
       }
-    } else {
-      window.location.href = `mailto:?subject=VitalLog Backup&body=Anbei mein Backup. (Bitte Datei manuell anhängen)`;
+    }
+    else if (option === 'download') {
       handleExportJSON();
     }
   };
@@ -578,6 +693,13 @@ const App: React.FC = () => {
             confirmData?.action();
             setConfirmData(null);
           }}
+        />
+
+        <ShareModal 
+          isOpen={showShareModal} 
+          onClose={() => setShowShareModal(false)} 
+          onSelect={executeShare} 
+          t={t} 
         />
 
         <section className="bg-white p-3 rounded-xl shadow-xl border-2 border-black print:hidden">
@@ -696,9 +818,12 @@ const App: React.FC = () => {
           <h3 className="font-black text-sm uppercase mb-1.5 flex items-center gap-2 text-blue-400 underline decoration-2 underline-offset-4"><i className="fa-solid fa-shield-halved"></i> {t.security.title}</h3>
           <p className="text-[11px] font-bold text-slate-300 mb-3 leading-relaxed italic">{t.security.infoText}</p>
           <div className="grid grid-cols-3 gap-2">
-            <button onClick={handleExportJSON} className="bg-white text-black border-2 border-black py-2 rounded-lg font-black text-[10px] uppercase shadow-[3px_3px_0px_0px_rgba(59,130,246,1)] hover:translate-y-0.5 active:shadow-none flex flex-col items-center justify-center gap-1"><i className="fa-solid fa-download"></i> Backup</button>
-            <button onClick={handleShareBackup} className="bg-white text-black border-2 border-black py-2 rounded-lg font-black text-[10px] uppercase shadow-[3px_3px_0px_0px_rgba(34,197,94,1)] hover:translate-y-0.5 active:shadow-none flex flex-col items-center justify-center gap-1"><i className="fa-solid fa-envelope"></i> E-Mail</button>
-            <button onClick={() => fileInputRef.current?.click()} className="bg-white text-black border-2 border-black py-2 rounded-lg font-black text-[10px] uppercase shadow-[3px_3px_0px_0px_rgba(59,130,246,1)] hover:translate-y-0.5 active:shadow-none flex flex-col items-center justify-center gap-1"><i className="fa-solid fa-upload"></i> Import</button>
+            <button onClick={handleExportJSON} className="bg-white text-black border-2 border-black py-2 rounded-lg font-black text-[10px] uppercase shadow-[3px_3px_0px_0px_rgba(59,130,246,1)] hover:translate-y-0.5 active:shadow-none flex flex-col items-center justify-center gap-1"><i className="fa-solid fa-download"></i> {t.security.backup}</button>
+            <button onClick={handleShareBackup} className="bg-white text-black border-2 border-black py-2 rounded-lg font-black text-[10px] uppercase shadow-[3px_3px_0px_0px_rgba(34,197,94,1)] hover:translate-y-0.5 active:shadow-none flex flex-col items-center justify-center gap-1">
+              <Share2 size={14} />
+              Teilen
+            </button>
+            <button onClick={() => fileInputRef.current?.click()} className="bg-white text-black border-2 border-black py-2 rounded-lg font-black text-[10px] uppercase shadow-[3px_3px_0px_0px_rgba(59,130,246,1)] hover:translate-y-0.5 active:shadow-none flex flex-col items-center justify-center gap-1"><i className="fa-solid fa-upload"></i> {t.security.import}</button>
             <input type="file" ref={fileInputRef} onChange={handleImportJSON} accept=".json" className="hidden" />
           </div>
         </section>
@@ -746,7 +871,7 @@ const App: React.FC = () => {
         {/* Versions-Anzeige am unteren Ende */}
         <div className="pb-8 text-center print:hidden">
           <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest bg-slate-100 px-3 py-1 rounded-full border border-slate-200">
-            Version v3.3.5 • MED-LOG Digital
+            Version v3.3.6 • MED-LOG Digital
           </span>
         </div>
 
