@@ -18,7 +18,8 @@ const translations = {
       { t: '2. Speichern', c: 'Drücken Sie den blauen Knopf "SPEICHERN". Dann sind Ihre Werte sicher im Programm.' },
       { t: '3. Farben', c: 'Rot bedeutet: Der Wert ist zu hoch oder zu tief. Gelb bedeutet: Das Programm hat den Wert geschätzt.' },
       { t: '4. Grafik & Liste', c: 'Unten können Sie wählen: Tabelle, Liste oder Grafik. So sehen Sie, wie es Ihnen geht.' },
-      { t: '5. Daten & Sicherung', c: 'WICHTIG: Ihre Daten bleiben PRIVAT auf diesem Gerät. Nutzen Sie "DATEN SICHERN" nur, wenn Werte vorhanden sind, um ein leeres Backup zu vermeiden. Mit "IMPORT" laden Sie alte Sicherungen.' }
+      { t: '5. Daten & Sicherung', c: 'WICHTIG: Ihre Daten bleiben PRIVAT auf diesem Gerät. Nutzen Sie "DATEN SICHERN" nur, wenn Werte vorhanden sind, um ein leeres Backup zu vermeiden. Mit "IMPORT" laden Sie alte Sicherungen.' },
+      { t: '6. Werte zeigen (Export)', c: 'Klicken Sie auf den Knopf "EXPORTFUNKTION". Dort können Sie wählen: Ein Bild, ein PDF zum Drucken oder eine Liste für den Computer. Das ist gut für Ihren Arzt.' }
     ],
     button: 'VERSTANDEN'
   },
@@ -30,7 +31,8 @@ const translations = {
       { t: '2. Save', c: 'Press the blue "SAVE" button. Your values are now stored in the app.' },
       { t: '3. Colors', c: 'Red means: Value is too high or too low. Yellow means: The app estimated this value.' },
       { t: '4. Chart & List', c: 'At the bottom, choose: Table, List, or Chart to see your progress.' },
-      { t: '5. Data & Backup', c: 'IMPORTANT: Your data stays PRIVATE on this device. Use "SAVE BACKUP" only when data is present to avoid empty files. Use "IMPORT" to restore files.' }
+      { t: '5. Data & Backup', c: 'IMPORTANT: Your data stays PRIVATE on this device. Use "SAVE BACKUP" only when data is present to avoid empty files. Use "IMPORT" to restore files.' },
+      { t: '6. Export Data', c: 'Click the "EXPORT" button. You can choose: An image, a PDF for printing, or a list for the computer. This is helpful for your doctor.' }
     ],
     button: 'GOT IT'
   },
@@ -42,7 +44,8 @@ const translations = {
       { t: '2. Enregistrer', c: 'Appuyez sur le bouton bleu "ENREGISTRER". Vos données sont maintenant sauvegardées.' },
       { t: '3. Couleurs', c: 'Rouge : Trop haut ou trop bas. Jaune : La valeur a été estimée par l\'application.' },
       { t: '4. Graphique', c: 'En bas, choisissez : Tableau, Liste ou Graphique pour voir votre santé.' },
-      { t: '5. Données et Sécurité', c: 'IMPORTANT: Vos données restent PRIVÉES sur cet appareil. Utilisez "SAUVEGARDER" seulement s\'il y a des données pour éviter les fichiers vides.' }
+      { t: '5. Données et Sécurité', c: 'IMPORTANT: Vos données restent PRIVÉES sur cet appareil. Utilisez "SAUVEGARDER" seulement s\'il y a des données pour éviter les fichiers vides.' },
+      { t: '6. Exporter (Export)', c: 'Cliquez sur le bouton "EXPORT". Vous pouvez choisir : Une image, un PDF pour imprimer ou une liste. C\'est bien pour votre médecin.' }
     ],
     button: 'COMPRIS'
   },
@@ -54,7 +57,8 @@ const translations = {
       { t: '2. Guardar', c: 'Pulse el botón azul "GUARDAR". Sus datos están ahora seguros.' },
       { t: '3. Coulores', c: 'Rojo: Valor muy alto o muy bajo. Amarillo: El programa estimó este valor.' },
       { t: '4. Gráfico y Lista', c: 'Abajo puede elegir: Tabla, Lista o Gráfico para ver su evolución.' },
-      { t: '5. Datos y Copia', c: 'IMPORTANTE: Sus datos son PRIVADOS en este dispositivo. Use "COPIA DE SEGURIDAD" solo cuando haya datos para evitar archivos vacíos.' }
+      { t: '5. Datos y Copia', c: 'IMPORTANTE: Sus datos son PRIVADOS en este dispositivo. Use "COPIA DE SEGURIDAD" solo cuando haya datos para evitar archivos vacíos.' },
+      { t: '6. Mostrar datos (Export)', c: 'Pulse el botón "EXPORTAR". Puede elegir: Una imagen, un PDF para imprimir o una lista. Esto es bueno para su médico.' }
     ],
     button: 'ENTENDIDO'
   },
@@ -66,7 +70,8 @@ const translations = {
       { t: '2. Kaydet', c: 'Mavi "KAYDET" düğmesine basın. Değerleriniz güvenle saklanacaktır.' },
       { t: '3. Renkler', c: 'Kırmızı: Değer çok yüksek veya çok düşük. Sarı: Program bu değeri tahmin etti.' },
       { t: '4. Grafik ve Liste', c: 'Alt kısımdan seçebilirsiniz: Tablo, Liste veya Grafik. Durumunuzu oradan görebilirsiniz.' },
-      { t: '5. Veri Güvenliği', c: 'ÖNEMLİ: Verileriniz bu cihazda ÖZEL kalır. Boş dosya oluşturmamak için sadece veri varken yedekleyin.' }
+      { t: '5. Veri Güvenliği', c: 'ÖNEMLİ: Verileriniz bu cihazda ÖZEL kalır. Boş dosya oluşturmamak için sadece veri varken yedekleyin.' },
+      { t: '6. Verileri Göster (Dışa Aktar)', c: '"DIŞA AKTAR" düğmesine tıklayın. Şunları seçebilirsiniz: Bir resim, yazdırmak için bir PDF veya bir liste. Bu doktorunuz için iyidir.' }
     ],
     button: 'ANLADIM'
   },
@@ -78,7 +83,8 @@ const translations = {
       { t: '2. الحفظ', c: 'اضغط على الزر الأزرق "حفظ". قيمك الآن مخزنة بأمان.' },
       { t: '3. الألوان', c: 'الأحمر: القيمة مرتفعة أو منخفضة جداً. الأصفر: القيمة تقديرية من البرنامج.' },
       { t: '4. الرسم والجدول', c: 'في الأسفل يمكنك الاختيار بين: جدول، قائمة أو رسم بياني لمتابعة حالتك.' },
-      { t: '5. البيانات والأمان', c: 'مهم: بياناتك تبقى خاصة على هذا الجهاز. استخدم النسخ الاحتياطي فقط عند وجود بيانات.' }
+      { t: '5. البيانات والأمان', c: 'مهم: بياناتك تبقى خاصة على هذا الجهاز. استخدم النسخ الاحتياطي فقط عند وجود بيانات.' },
+      { t: '6. تصدير البيانات', c: 'اضغط على زر "تصدير". يمكنك اختيار: صورة، ملف PDF للطباعة، أو قائمة للكمبيوتر. هذا مفيد لطبيبك.' }
     ],
     button: 'فهمت'
   }
