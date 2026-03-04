@@ -2,11 +2,11 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
-export default defineConfig(({ mode }) => ({
-  base: mode === 'production' ? '/gesundheits-tracker-web-1-/' : '/',
+export default defineConfig({
+  base: './',
   plugins: [react()],
   server: {
     port: 3000,
     host: '0.0.0.0',
   },
-}));
+});
