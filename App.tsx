@@ -1,14 +1,14 @@
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import TimeSlotCard from './components/TimeSlotCard';
-import HistoryTable from './components/HistoryTable';
-import DailySummaryTable from './components/DailySummaryTable';
-import HealthChart from './components/HealthChart';
-import UserManual from './components/UserManual';
-import { HealthEntry, DailyInputs, TimeOfDay, UserProfile, BzUnit, Language } from './types';
-import { formatDateToGerman, isValidGermanDate, parseGermanDate } from './utils/dateUtils';
-import { mmolToMg } from './utils/healthUtils';
-import { uiTranslations } from './translations';
+import TimeSlotCard from './src/components/TimeSlotCard';
+import HistoryTable from './src/components/HistoryTable';
+import DailySummaryTable from './src/components/DailySummaryTable';
+import HealthChart from './src/components/HealthChart';
+import UserManual from './src/components/UserManual';
+import { HealthEntry, DailyInputs, TimeOfDay, UserProfile, BzUnit, Language } from './src/types';
+import { formatDateToGerman, isValidGermanDate, parseGermanDate } from './src/utils/dateUtils';
+import { mmolToMg } from './src/utils/healthUtils';
+import { uiTranslations } from './src/translations';
 import * as htmlToImage from 'html-to-image';
 import * as XLSX from 'xlsx';
 import { jsPDF } from 'jspdf';
@@ -705,7 +705,7 @@ const App: React.FC = () => {
         <section className="bg-white p-3 rounded-xl shadow-xl border-2 border-black print:hidden">
           <div className="grid grid-cols-2 gap-2">
             {TIMES.map(time => (
-              <TimeSlotCard key={time} label={time} translatedLabel={t.times[time]} values={inputs[time]} bzUnit={bzUnit} onChange={(f, v) => handleInputChange(time, f, v)} />
+              <TimeSlotCard key={time} label={time} translatedLabel={t.times[time]} values={inputs[time]} bzUnit={bzUnit} onChange={(f: string, v: string) => handleInputChange(time, f as 'bz' | 'rrSys' | 'rrDia' | 'puls', v)} />
             ))}
           </div>
           <div className="mt-4 flex gap-2">
@@ -792,7 +792,7 @@ const App: React.FC = () => {
                 entries={entries} 
                 bzUnit={bzUnit} 
                 language={language} 
-                onDeleteDay={(d) => requestDelete("Tag löschen", `Möchten Sie wirklich alle Daten für den ${d} löschen?`, () => setEntries(p => p.filter(e => e.datum !== d)))} 
+                onDeleteDay={(d: string) => requestDelete("Tag löschen", `Möchten Sie wirklich alle Daten für den ${d} löschen?`, () => setEntries(p => p.filter(e => e.datum !== d)))} 
                 onDeleteMultipleDays={(dates) => requestDelete("Auswahl löschen", `Möchten Sie wirklich alle Daten für ${dates.length} ausgewählte Tage löschen?`, () => setEntries(p => p.filter(e => !dates.includes(e.datum))))}
                 onDeleteEntry={(id) => requestDelete("Eintrag löschen", "Soll dieser Einzelmesswert wirklich entfernt werden?", () => setEntries(p => p.filter(e => e.id !== id)))} 
               />
